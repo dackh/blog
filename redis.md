@@ -342,7 +342,7 @@ Redis提供的Sentinel(哨兵)机制，通过Sentinel模式启动Redis后，自�
 - 提醒：当被监控的某个Redis服务器出现问题之后，Sentinel可以通过API向管理者或者其他的应用程序发送通知。
 - 自动故障迁移：当一个主服务器不能正常工作时，Sentinel会开始一次自动故障操作，它会将失效的主服务器的其他一台从服务器升级为新的主服务器，并让失效的主服务器的其他从服务器改为复制新的主服务器。当客户端试图连接失效的主服务器时，集群也会向客户端返回新服务器的地址，使得集群可以使用新主服务器代替失效服务器。
 
-###**Sentinel主从原理**
+### **Sentinel主从原理**
 ##### **服务器与Sentinel系统**
 ![clipboard.png](https://segmentfault.com/img/bVbgmYQ)
 
@@ -352,15 +352,15 @@ Redis提供的Sentinel(哨兵)机制，通过Sentinel模式启动Redis后，自�
 ##### **故障转移**
 ![clipboard.png](https://segmentfault.com/img/bVbgmYS)
 
-#####**原来的M重新进入s-m replicaiton将自动降为s**
+##### **原来的M重新进入s-m replicaiton将自动降为s**
 ![clipboard.png](https://segmentfault.com/img/bVbgmYT)
 
 # **参考**
-Redis设计与实现
-[Redis 讲解系列之 Redis的持久化][1]
-[Redis 讲解系列之 Redis的事务][2]
-[Redis 讲解系列之 Redis的复制(一)][3]
-[Redis 讲解系列之 Redis的复制(二)][4]
+- Redis设计与实现
+- [Redis 讲解系列之 Redis的持久化][1]
+- [Redis 讲解系列之 Redis的事务][2]
+- [Redis 讲解系列之 Redis的复制(一)][3]
+- [Redis 讲解系列之 Redis的复制(二)][4]
 
 
   [1]: https://blog.csdn.net/u012437781/article/details/78215590
