@@ -13,64 +13,64 @@
 	sudo start docker		//sudo service docker  start
 	
 ## docker容器操作
-###查看docker是否正常工作
+### 查看docker是否正常工作
 	sudo docker info
-###运行容器
+### 运行容器
 	sudo docker run -i -t ubuntu /bin/bash
 	//-i标记保证容器是STDIN开启的
 	//-t标记告诉docker要创建的容器分配一个伪tty终端
 	//ubuntu 指定镜像
 	// /bin/bash告诉docker容器要运行什么命令
 
-###容器命名
+### 容器命名
 docker默认为创建的容器生成一个随机的名称，可通过--name标记来给容器命名
 
 	sudo docker run --name myName -i -t ubuntu /bin/bash
 
-###启动已经停止的容器
+### 启动已经停止的容器
 
 	sudo docker start myName  //也可通过id指定
 	//也可使用docker restart命令
 
-###附着到容器上
+### 附着到容器上
 docker容器重新启动的时候，会沿用`docker run`命令时指定的参数来运行，因此上例中重新启动会运行一个交互式的shell，此外也可以用`docker attach`重新附着到该容器的会话上
 
 	sudo docker attach myName	//也可通过id指定
 
-###创建守护式容器
+### 创建守护式容器
 除了交互式运行的容器，也可以创建长期运行的容器，守护式容器没有交互式会话，非常适合运行应用程序和服务。
 
 	sudo docker run --name daemon_name -d ubuntu /bin/sh -c "while true; do echo hello world;sleep 1;done"
 	//-d 标记docker将容器放在后台运行
 	//while循环一直打印hello world
 
-###查看docker容器
+### 查看docker容器
 
 	docker ps 		//查看正在运行的容器
 	docker ps -a 	//查看所有的容器
 
-###查看容器内部
+### 查看容器内部
 	
 	docker logs daemon_name	//获取容器的日志，可通过-f来追踪日志
 
-###日志驱动
+### 日志驱动
 docker1.6开始，可通过`--log-driver`选项来控制docker守护线程和容器所有的日志驱动，可以在执行docker守护线程或者执行`docker run`命令时使用这个选项。
 
 	sudo docker run --log-driver="syslog" --name daemon_name -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
 	//将daemon_name容器的日志输出到syslog，导致docker logs命令不会输出任何东西
 
-###查看容器内的进程
+### 查看容器内的进程
 	
 	sudo docker top daemon_name
 
-###在容器内部运行进程
+### 在容器内部运行进程
 
 	sudo docker exec -d daemon_name touch /etc/new_config_file
 	//-d 标记运行一个后台进程 后面明智执行名气的名字以及执行的命令
 	sudo docker exec -t -i daemon_name /bin/bash
 	//创建TTY并捕捉STDIN
 
-###关闭容器
+### 关闭容器
 
 	sudo docker stop daemon_name
 
@@ -79,7 +79,7 @@ docker1.6开始，可通过`--log-driver`选项来控制docker守护线程和容
 	//查看更多容器的信息
 	//该命令也可用来查看镜像信息
 
-###删除容器
+### 删除容器
 
 	sudo docker rm 80430f8d0921		//通过指定容器id
 	//删除全部容器
@@ -88,12 +88,12 @@ docker1.6开始，可通过`--log-driver`选项来控制docker守护线程和容
 
 ## docker镜像
 
-###列出docker镜像
+### 列出docker镜像
 
 	sudo docker images
 	//本地镜像都保存在docker宿主机的/var/lib/docker目录i西安，每个镜像都保存在docker所采用的存储驱动目录下面，如aufs或者devicemapper，也可以在/var/bin/docker/containers目录下看到所有容器
 
-###拉取镜像
+### 拉取镜像
 	
 	sudo docker pull ubuntu:12.04
 

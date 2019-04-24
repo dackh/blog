@@ -4,7 +4,7 @@
 - JVM(Java Virtual Machine)是整个Java跨平台的最核心的部分，能够运行以Java语言写作的软件程序。所有的Java程序都会首先被编译为.class文件，这种类文件可以在虚拟机上运行，class文件并不直接与机器的操作系统相对应，而是经过虚拟机间接与操作系统交互，由虚拟机将程序解释给本地系统执行。
 # **Java运行时区域**
 
-![clipboard.png](/img/bVbdRvK)
+![clipboard.png](https://segmentfault.com/img/bVbdRvK)
 
 ### **程序计数器**
 内存中较小的内存空间，通过计数器的值可以选取下一条执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。
@@ -193,7 +193,7 @@ jstack可以定位到线程堆栈，根据堆栈信息我们可以定位到具�
     root     21711     1  1 14:47 pts/3    00:02:10 java -jar mrf-center.jar
 得到进程ID为21711，第二步找出该进程内最耗费CPU的线程，可以使用ps -Lfp pid或者ps -mp pid -o THREAD, tid, time或者top -Hp pid，我这里用第三个，输出如下：
 
-![clipboard.png](/img/bVbi3Lx)
+![clipboard.png](https://segmentfault.com/img/bVbi3Lx)
 
 
 TIME列就是各个Java线程耗费的CPU时间，CPU时间最长的是线程ID为21742的线程，用
@@ -240,7 +240,7 @@ jmap语法格式如下：
     jmap -permstat pid
 打印进程的类加载器和类加载器加载的持久代对象信息，输出：类加载器名称、对象是否存活（不可靠）、对象地址、父类加载器、已加载的类大小等信息，如下图：
 
-![clipboard.png](/img/bVbi3LB)
+![clipboard.png](https://segmentfault.com/img/bVbi3LB)
 
 使用jmap -heap pid查看进程堆内存使用情况，包括使用的GC算法、堆配置参数和各代中堆内存使用情况。比如下面的例子：
 
@@ -367,7 +367,7 @@ dump出来的文件可以用MAT、VisualVM等工具查看，这里用jhat查看�
     Server is ready.
 注意如果Dump文件太大，可能需要加上-J-Xmx512m这种参数指定最大堆内存，即jhat -J-Xmx512m -port 9998 /tmp/dump.dat。然后就可以在浏览器中输入主机地址:9998查看了：
 
-![clipboard.png](/img/bVbi3LN)
+![clipboard.png](https://segmentfault.com/img/bVbi3LN)
 
 
 上面红线框出来的部分大家可以自己去摸索下，最后一项支持OQL（对象查询语言）。
@@ -389,7 +389,7 @@ vmid是Java虚拟机ID，在Linux/Unix系统上一般就是进程ID。interval�
 
 要明白上面各列的意义，先看JVM堆内存布局：
 
-![clipboard.png](/img/bVbi3LX)
+![clipboard.png](https://segmentfault.com/img/bVbi3LX)
 
 可以看出：
 
@@ -482,7 +482,7 @@ Heap Dump(heap=dump)的例子，它比上面的Heap Allocation Profiling能生�
 #### **可达性分析算法**
 以GC Roots为起始点，从这些节点开始向下搜索，能够搜索到的对象都是存活的，不可达的对象则为不可用。 
 
-![clipboard.png](/img/bVbdRv2)
+![clipboard.png](https://segmentfault.com/img/bVbdRv2)
 
 在Java语言中，可作为GC Roots的对象包括下面几种：
 - 虚拟机栈中引用的对象
@@ -573,7 +573,7 @@ Tomcat 中的 ConcurrentCache 就使用了 WeakHashMap 来实现缓存功能。C
 - 效率问题，标记跟清除两个过程的效率都不高
 - 空间问题，标记清除之后会产生大量不连续的内存碎片。
 
-![clipboard.png](/img/bVbdR7y)
+![clipboard.png](https://segmentfault.com/img/bVbdR7y)
 
 ### **复制算法**
 将内存分为大小相等的两块，每次只使用其中的一块，当这块内存用完了，就将还存活的对象负责到另一块上面，然后再把一是要难过过得内存空间一次清理掉。
@@ -581,12 +581,12 @@ Tomcat 中的 ConcurrentCache 就使用了 WeakHashMap 来实现缓存功能。C
 不足：
 - 代价太高，只使用一半内存。
 
-![clipboard.png](/img/bVbdR8C)
+![clipboard.png](https://segmentfault.com/img/bVbdR8C)
 
 ### **标记整理算法**
 首先标记出所有需要回收的对象，然后将所有存活的对象都向一端移动，最后清理掉端边界以外的内存。
 
-![clipboard.png](/img/bVbdR86)
+![clipboard.png](https://segmentfault.com/img/bVbdR86)
 
 ### **分代收集算法**
 根据对象的存活周期将内存划分为几块。一般将Java堆分为新生代跟老年代，这样就可以根据各个年代的特点采用最适当的收集算法。
@@ -596,7 +596,7 @@ Tomcat 中的 ConcurrentCache 就使用了 WeakHashMap 来实现缓存功能。C
 # **垃圾收集器**
 如果说手机算法是内存回收的方法论，那么垃圾收集器就是内存回收的具体实现。
 
-![clipboard.png](/img/bVbdSaH)
+![clipboard.png](https://segmentfault.com/img/bVbdSaH)
 
 上图展示了7种不同分代的收集器，如果两个收集器之间存在连线，就说明它们可以搭配使用。
 
@@ -604,7 +604,7 @@ Tomcat 中的 ConcurrentCache 就使用了 WeakHashMap 来实现缓存功能。C
 
 ### **Serial收集器**
 
-![clipboard.png](/img/bVbdT4O)
+![clipboard.png](https://segmentfault.com/img/bVbdT4O)
 
 最基本、最悠久的收集器，单线程收集器，复制算法 
 
@@ -616,7 +616,7 @@ Tomcat 中的 ConcurrentCache 就使用了 WeakHashMap 来实现缓存功能。C
 
 ### **ParNew收集器**
 
-![clipboard.png](/img/bVbdT4J)
+![clipboard.png](https://segmentfault.com/img/bVbdT4J)
 
 Serial的多线程版本、并行，复制算法。
 
@@ -635,7 +635,7 @@ Parallel Scavenge收集器提供了两个参数用于精确控制吞吐量，分
 
 ### **Serial Old收集器**
 
-![clipboard.png](/img/bVbdT7E)
+![clipboard.png](https://segmentfault.com/img/bVbdT7E)
 
 Serial的老年代版本，单线程，标记-整理算法。
 
@@ -645,7 +645,7 @@ Serial的老年代版本，单线程，标记-整理算法。
 
 ### **Parallel Old收集器**
 
-![clipboard.png](/img/bVbdT8d)
+![clipboard.png](https://segmentfault.com/img/bVbdT8d)
 
 parallel Scavenge的老年代版本，多线程，标记-整理算法，JDK1.6之后提供。
 
@@ -653,7 +653,7 @@ parallel Scavenge的老年代版本，多线程，标记-整理算法，JDK1.6�
 
 ### **CMS收集器**
 
-![clipboard.png](/img/bVbdT9g)
+![clipboard.png](https://segmentfault.com/img/bVbdT9g)
 
 CMS(Concurrent Mark Sweep)，从名字来就可以看出，基于标记-清除算法。
 
@@ -682,14 +682,14 @@ CMS还远达不到完美的程度，还有以下3个缺点：
 
 G1将整个Java堆划分为多个大小相等的独立区域（Region)，虽然还保留新生代和老年代的概念，但是新生代和老年代不再是物理隔离级别，它们都是一部分Region的集合。
 
-![clipboard.png](/img/bVbdUmi)
+![clipboard.png](https://segmentfault.com/img/bVbdUmi)
 
 
 G1收集器之所以能够建立可预测的停顿时间模型，是因为它可以有计划低避免在整个Java堆中进行全区域的垃圾回收。G1跟踪各个Region里面的垃圾堆积的价值大小（回收所获得的空间大小以及回收所需时间的经验值），在后台维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的Region。
 
 虚拟机使用Remembered Set来避免全栈扫描，G1中每个Region都有一个与之对应的Remembered Set，用来记录该Region对象的引用对象所在的Region。
 
-![clipboard.png](/img/bVbdUmd)
+![clipboard.png](https://segmentfault.com/img/bVbdUmd)
 
 如果不计算Remembered Set的操作，G1收集器的运作大致可分为：
 - 初始标记
@@ -731,7 +731,7 @@ G1收集器之所以能够建立可预测的停顿时间模型，是因为它可
 - **引用常量**，常量在编辑阶段会存入调用类的常用池中，本质上并没有直接引用到定义常量的类。
 ### **类加载的过程**
 
-![clipboard.png](/img/bVbeIIC)
+![clipboard.png](https://segmentfault.com/img/bVbeIIC)
 
 #### **加载**
 在加载阶段，虚拟机需要完成下面三件事：
@@ -782,7 +782,7 @@ G1收集器之所以能够建立可预测的停顿时间模型，是因为它可
 
 应用程序都是由三种类加载器互相配合进行加载的，如果有必要还可以加入自己定义的类加载器，这些类加载器之间的关系一般如下：
 
-![clipboard.png](/img/bVbe7vS)
+![clipboard.png](https://segmentfault.com/img/bVbe7vS)
 
 图中展示的类加载器之间的这种层次关系，称为类加载器的双亲委派模型，双亲委派模型除了顶层的启动类加载器外，其余的类加载器都应当有自己的父类加载器，这里加载器之间的父子关系一般不会以继承（Inheritance）的关系来实现，而是都是用组合（Composition）关系来服用父加载器的代码。
 
