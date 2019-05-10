@@ -215,6 +215,11 @@ linux下一般想让某个程序在后台运行，一般使用`&`
       1  Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
 
 
+### 查看内存
+	cat /proc/meminfo
+	free -m
+### 查看硬盘
+	df -h
 
 
 # 参考
