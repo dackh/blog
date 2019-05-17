@@ -26,3 +26,4 @@
 
 ## go
 - [go总结](https://github.com/dackh/blog/blob/master/go.md)
+- [消消乐demo](https://github.com/dackh/blog/blob/master/%E6%B6%88%E6%B6%88%E4%B9%90demo.md)
