@@ -18,7 +18,7 @@
 - [计算机网络](https://github.com/dackh/blog/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C.md)
 - [操作系统](https://github.com/dackh/blog/blob/master/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.md)
 - [linux](https://github.com/dackh/blog/blob/master/linux.md)
-
+- [正则表达式](https://github.com/dackh/blog/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
 ## 架构相关
 - [docker](https://github.com/dackh/blog/blob/master/docker.md)
 - [git总结](https://github.com/dackh/blog/blob/master/git.md)
