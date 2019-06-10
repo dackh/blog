@@ -30,16 +30,33 @@ Kafka集群持久保存所有已发布的记录 - 无论是否已使用 - 使用
 ![https://segmentfault.com/img/bVbei9M?w=474&h=252](https://segmentfault.com/img/bVbei9M?w=474&h=252)
 
 ## broker和集群
-一个独立额Kafka服务器被称为broker，broker是集群的组成部分，每个集群都有一个broker充当了集群控制者的角色（自动从集群活跃成员中选举出来），**控制者负责管理工作，包括将分区分配给broker和监控broker。**
+一个独立的Kafka服务器被称为broker，broker是集群的组成部分，每个集群都有一个broker充当了集群控制者的角色（自动从集群活跃成员中选举出来），**控制者负责管理工作，包括将分区分配给broker和监控broker。**
 
-## 容错
+# 容错
 
 日志的分区分布在Kafka集群中的服务器上，每个服务器处理数据并请求分区的共享。 每个分区都在可配置数量的服务器上进行复制，以实现容错。（多个服务器保存partition数据，实现容错）
 
 每个分区都有一个服务器充当“领导者”，零个或多个服务器充当“追随者”。 领导者处理分区的所有读取和写入请求，而关注者被动地复制领导者。 如果领导者失败，其中一个粉丝将自动成为新的领导者。 每个服务器都充当其某些分区的领导者和其他服务器的追随者，因此负载在群集中得到很好的平衡。（高性能实现）
 
+# 再均衡
+在kafka中，当消费者发生崩溃或者有新的消费者加入时，将会触发**再均衡**。
 
+消费者会像叫做_consumer_offset的特殊主题发送消息，消息内包含灭个分区的偏移量。
 
+再均衡之后，消费者可能分配到新的分区，为了能够继续之前的工作，消费者需要读取每个分区最后一次提交的offset，但如果提交的offset小于客户端处理的最后一个offset，那么消息将会被重复处理。
+
+KafkaConsumer API提供了很多种方式来提交偏移量。
+
+## 自动提交
+最简单的提交方式，将enable.auto.commit设为true，提交时间为auto.commit.interval.ms设置的值，默认为5s。每过5s，消费者会自动把从poll()方法接收的最大offset提交上去。
+
+这种方式虽然简单，但是并没有避免重复处理消息的问题。(在5s内发生再均衡)
+
+## 提交当前offset
+消费者API提供了另一种提交偏移量的方式，开发者可以在必要的时候提交当前的偏移量而不是基于时间间隔。通过调用`commitSync()`或者`commitAsync()`方法进行提交。
+
+- `commitSync()`在broker回应之前一直阻塞，限制了应用程序的吞吐量。
+- `commitAsync()`是异步提交的方式，但是commitAsync()无法保证一定成功，commitSync()在成功提交或者遇到无法恢复的错误之前会一直重试，但是commitAsync()不会。之所以不进行重试是因为它收到响应之前可能另一个更大的offset提交成功了。commitAsync同时也支持回调。
 # kafka为什么这么快
 
 - [为什么kafka那么快](https://mp.weixin.qq.com/s?__biz=MzIxMjAzMDA1MQ==&mid=2648945468&idx=1&sn=b622788361b384e152080b60e5ea69a7#rd&utm_source=tuicool&utm_medium=referral)
@@ -57,4 +74,5 @@ Kafka集群持久保存所有已发布的记录 - 无论是否已使用 - 使用
 
 ### 顺序写入
 磁盘每次写入都会寻址->写入，其中寻址是最耗时的，所以对磁盘来说随机I/O是最慢的，为了提高磁盘的读写速度，kafka就是使用顺序I/O。
-![http://mmbiz.qpic.cn/mmbiz/nfxUjuI2HXjiahgInoFXLfVoghamdPiaBafMYrFo4rFUykuic1Ks0P5DBzxjVfzgYlscCWeicNnE3HrSKxJkCxOcEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1](http://mmbiz.qpic.cn/mmbiz/nfxUjuI2HXjiahgInoFXLfVoghamdPiaBafMYrFo4rFUykuic1Ks0P5DBzxjVfzgYlscCWeicNnE3HrSKxJkCxOcEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+[http://mmbiz.qpic.cn/mmbiz/nfxUjuI2HXjiahgInoFXLfVoghamdPiaBafMYrFo4rFUykuic1Ks0P5DBzxjVfzgYlscCWeicNnE3HrSKxJkCxOcEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1](http://mmbiz.qpic.cn/mmbiz/nfxUjuI2HXjiahgInoFXLfVoghamdPiaBafMYrFo4rFUykuic1Ks0P5DBzxjVfzgYlscCWeicNnE3HrSKxJkCxOcEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
