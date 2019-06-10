@@ -1,6 +1,7 @@
 # 基础架构及术语
 
 ![https://pic1.zhimg.com/v2-4692429e9184ed4a93911fa3a1361d28_b.jpg](https://pic1.zhimg.com/v2-4692429e9184ed4a93911fa3a1361d28_b.jpg)
+
 ## 主题和分区
 topic是发布记录的类别或订阅源名称。 Kafka的topic总是多用户; 也就是说，一个主题可以有零个，一个或多个消费者订阅写入它的数据。
 
@@ -57,6 +58,31 @@ KafkaConsumer API提供了很多种方式来提交偏移量。
 
 - `commitSync()`在broker回应之前一直阻塞，限制了应用程序的吞吐量。
 - `commitAsync()`是异步提交的方式，但是commitAsync()无法保证一定成功，commitSync()在成功提交或者遇到无法恢复的错误之前会一直重试，但是commitAsync()不会。之所以不进行重试是因为它收到响应之前可能另一个更大的offset提交成功了。commitAsync同时也支持回调。
+
+
+# 集群成员之间的关系
+kafka通过zookeeper来维护集群成员之间的关系，每个broker都有一个唯一标识符，这个标识符可以配置里指定，也可以自动生成。在broker启动的时候，通过创建zookeeper的临时节点把自己的ID注册到zookeeper。kafka组件订阅zookeeper的/brokers/ids路径，当有broker加入集群或者退出集群时，这个组件就会获得通知。
+
+在broker停机、出现网络分区或长时间垃圾回收停顿时，broker会从zookeeper上断开连接，此时broker在启动时创建的临时节点会自动从zookeeper移除，监听broker列表的kafka组件会被告知该broker已移除。
+
+在broker关闭之后，它的节点会消息，但是ID会继续存在于其他数据结构中，在之后如果使用相同ID启动一个全新的broker，它会立刻加入集群并且拥有与旧broker相同的分区和主题。
+
+## 控制器
+控制器也是broker，同时还负责**分区首领的选举**。集群中第一个启动的broker通过在zookeeper里创建一个临时节点/controller让自己成为控制器。其他节点在该节点上创建watch对象，通过这种方式确保集群里只有一个控制器存在。
+
+如果控制器断开连接，其他监听的节点收到变更通知之后将会尝试创建controller节点成为控制器，只有第一个创建成功的才能成为控制器。
+
+## 分区复制
+
+kafka中的每个分区都有多个副本，这些副本保存在broker中，副本可以分为：
+- 首领副本(leader)：所有生产者消费者请求都会经过这个副本。
+- 跟随者副本(follower)：从首领复制消息，保持与首领一致。
+
+leader通过查看每个follower请求的最新offset了解follower进度，**如果follower在10s(通过replica.lag.time.max.ms配值)内没有请求最新消息，那么它被认为不同步**。只有同步的follower才能在当前leader宕机时被选定为新的leader。
+
+每个分区都会有一个首选leader——创建主题时选定的首领就是分区的首选首领，默认情况下，kafka的auto.leader.rebalance.enable被设为true，它会检查首选首领是不是当前首领，如果不是，并且该副本同步，那么就会触发首领选举，让首选首领成为当前首领。
+
+
 # kafka为什么这么快
 
 - [为什么kafka那么快](https://mp.weixin.qq.com/s?__biz=MzIxMjAzMDA1MQ==&mid=2648945468&idx=1&sn=b622788361b384e152080b60e5ea69a7#rd&utm_source=tuicool&utm_medium=referral)
@@ -76,3 +102,7 @@ KafkaConsumer API提供了很多种方式来提交偏移量。
 磁盘每次写入都会寻址->写入，其中寻址是最耗时的，所以对磁盘来说随机I/O是最慢的，为了提高磁盘的读写速度，kafka就是使用顺序I/O。
 
 [http://mmbiz.qpic.cn/mmbiz/nfxUjuI2HXjiahgInoFXLfVoghamdPiaBafMYrFo4rFUykuic1Ks0P5DBzxjVfzgYlscCWeicNnE3HrSKxJkCxOcEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1](http://mmbiz.qpic.cn/mmbiz/nfxUjuI2HXjiahgInoFXLfVoghamdPiaBafMYrFo4rFUykuic1Ks0P5DBzxjVfzgYlscCWeicNnE3HrSKxJkCxOcEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+# 参考
+- kafka权威指南 
+- [http://kafka.apache.org/intro](http://kafka.apache.org/intro "http://kafka.apache.org/intro")
