@@ -171,6 +171,19 @@ lsof打开的文件可以是：
 - `-h`：显示帮助信息
 - `-v`：显示版本信息
 
+
+# linux日志
+
+### /var目录
+/var所有服务的登陆文件错误或错误文件信息(LOG FILES)都在/var/log下，此外一些数据库如mysql则在/var/lib下，用户未读的邮件默认放在/var/spool/mail
+
+### /var/log
+常见系统日志：
+- 核心启动日志：/var/log/dmesg
+- 系统报错日志：/var/log/messages
+- 邮件系统日志：/var/log/maillog
+- FTP系统日志：/var/log/xferlog
+
 # ip addr 
 linux的ip命令跟ifconfig类似，但是前者功能更强大，并旨在取代后者。
 
