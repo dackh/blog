@@ -28,6 +28,7 @@
 ## 中间件
 - [docker](https://github.com/dackh/blog/blob/master/docker.md)
 - [kafka](https://github.com/dackh/blog/blob/master/kafka.md)
+- [zookeeper](https://github.com/dackh/blog/blob/master/zookeeper.md)
 ## go
 - [go总结](https://github.com/dackh/blog/blob/master/go.md)
 - [消消乐demo](https://github.com/dackh/blog/blob/master/%E6%B6%88%E6%B6%88%E4%B9%90demo.md)
