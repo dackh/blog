@@ -76,6 +76,18 @@ Zookeeper所管理的watch可以分为两类：
 - getData操作上的watch，在背监视的Znode删除或数据更新时被触发。在被创建时不能被触发，因为只有一个Znode存在，getData操作时才会成功。
 - getChildren操作上的watch，在被监视的Znode的子节点创建或删除，或是这个Znode自身被删除时被触发。可以通过查看watch事件类型来区分是Znode，还是他的子节点被删除：NodeDelete表示Znode被删除，NodeDeletedChanged表示子节点被删除。
 
+# Zookeeper的应用场景
+## 数据发布订阅
+数据发布/订阅系统，即所谓的配置中心，顾名思义局势发布者将数据发布到Zookeeper的一个或一系列节点上，供订阅者进行数据订阅，进而达到动态获取数据的目的，实现配置信息的集中式管理和数据的动态更新。
+
+Zookeeper采用推拉结合的方法：客户端像服务端注册自己需要关注的节点，一旦该节点的数据发生变更，那么服务端就会向相应的客户端发送Watcher事件通知，客户端接收到这个消息之后，需要主动到服务端获取最新的数据。
+
+## 负载均衡
+即软件负载均衡。最典型的是消息中间件的生产、消费者负载均衡。
+
+
+
+## 
 
 # **Leader选举**
 Leader选举时保证数据一致性的的关键所在。当Zookeeper集群中的一台服务器出现一下情况之一时，需要进入Leader选举。
@@ -105,10 +117,12 @@ Leader选举时保证数据一致性的的关键所在。当Zookeeper集群中�
 - **不能保证每次服务请求的可用性**。任何时刻对Zookeeper的访问请求能得到的一致的数据，同时系统对网络分割具备容错性，但是它不能保证每次服务请求的可用性。
 - **进行leader选举的时候集群式不可用的**，在使用Zookeeper获取服务列表时，当master节点因为网络故障与其他节点失去联系时，剩余节点会重新进行leader选举。问题在于，选举的时间太长，30~120s，且选举期间整个Zookeeper集群都是不可用的，这就导致在选举期间服务瘫痪，虽然服务能够最终恢复，但是漫长的选举时间是不能容忍的。所以说，Zookeeper不能保证服务可用性。  
 
+
 # **参考**
-[Zookeeper学习第一期][1]
-[【分布式】Zookeeper的Leader选举][2]
-[Zookeeper的CP特性][3]
+- [从paxos到zookeeper分布式一致性原理与实践]()
+- [Zookeeper学习第一期][1]
+- [【分布式】Zookeeper的Leader选举][2]
+- [Zookeeper的CP特性][3]
 
 
   [1]: https://www.cnblogs.com/sunddenly/p/4033574.html

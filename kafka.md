@@ -39,6 +39,32 @@ Kafka集群持久保存所有已发布的记录 - 无论是否已使用 - 使用
 
 每个分区都有一个服务器充当“领导者”，零个或多个服务器充当“追随者”。 领导者处理分区的所有读取和写入请求，而关注者被动地复制领导者。 如果领导者失败，其中一个粉丝将自动成为新的领导者。 每个服务器都充当其某些分区的领导者和其他服务器的追随者，因此负载在群集中得到很好的平衡。（高性能实现）
 
+# zookeeper在kafka中的作用
+### Broker注册
+在Zookeeper上会有一个专门用来进行Broker服务器列表记录的节点，节点路径为/broker/ids。
+
+每个Broker服务器在启动的时候都会在Zookeeper上进行注册，节点路径为/broker/ids/[0-N]。
+
+Broker创建的是临时节点，一旦Broker服务器宕机或者下线，那么对应的Broker节点也就会被删除。
+
+### Topic注册
+在Kafka中，同一个Topic的多个分为会分不到不同的Broker上，而这些分区信息与Broker的对应关系都是由Zookeeper维护的，节点为/broker/topics。Kafka每个Topic都会以/broker/topic/[topic]的形式记录在该节点，例如：/broker/topics/login。
+
+Broker服务器启动后，会到对应的Topic节点下注册自己的BrokerID，并写入针对该Topic的分区总数。例如：/broker/topics/login/3 -> 2，这个节点表示Broker ID为3的一个Broker服务器对于`login`这个Topic的消息提供了2个分区进行消息存储。同样，这个分区数节点也是临时节点。
+
+### 生产者负载均衡
+因为同一个Topic的消息进行分区并将其分布到不同的Broker服务器上，因此生产者发送到Broker需要进行负载均衡。
+
+在Kafka中，客户端使用了基于Zookeeper的负载均衡策略来解决生产者的负载均衡问题。Kafka的生产者会对Zookeeper上的`Broker的新增或减少`、`Topic的新增或减少`和`Broker与Topic关联关系的变化`等事件注册Watcher监听，这样就可以实现动态的负载均衡机制了。
+
+在此模式下，还允许开发人员控制生产者根据一定的规则(例如消费者的消费行为)进行数据分区。
+
+通过Zookeeper的Watcher机制通知能够让生产者动态地获取Broker和Topic的变化情况。
+
+### 消费者负载均衡
+
+
+
 # 再均衡
 在kafka中，当消费者发生崩溃或者有新的消费者加入时，将会触发**再均衡**。
 
@@ -146,5 +172,6 @@ kafka很大程度上依赖文件系统来存储和缓存消息，有一普遍的
 
 # 参考
 - kafka权威指南 
+- 从Pasox到Zookeeper
 - [http://kafka.apache.org/intro](http://kafka.apache.org/intro "http://kafka.apache.org/intro")
 - [Kafka的内部机制深入(持久化，分布式，通讯协议)](https://www.cnblogs.com/pony1223/p/9807715.html)
