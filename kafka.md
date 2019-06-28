@@ -48,7 +48,7 @@ Kafka集群持久保存所有已发布的记录 - 无论是否已使用 - 使用
 Broker创建的是临时节点，一旦Broker服务器宕机或者下线，那么对应的Broker节点也就会被删除。
 
 ### Topic注册
-在Kafka中，同一个Topic的多个分为会分不到不同的Broker上，而这些分区信息与Broker的对应关系都是由Zookeeper维护的，节点为/broker/topics。Kafka每个Topic都会以/broker/topic/[topic]的形式记录在该节点，例如：/broker/topics/login。
+在Kafka中，同一个Topic的多个分为会分不到不同的Broker上，而这些分区信息与Broker的对应关系都是由Zookeeper维护的，节点为`/broker/topics`。Kafka每个Topic都会以`/broker/topic/[topic]`的形式记录在该节点，例如：`/broker/topics/login`。
 
 Broker服务器启动后，会到对应的Topic节点下注册自己的BrokerID，并写入针对该Topic的分区总数。例如：/broker/topics/login/3 -> 2，这个节点表示Broker ID为3的一个Broker服务器对于`login`这个Topic的消息提供了2个分区进行消息存储。同样，这个分区数节点也是临时节点。
 
@@ -62,8 +62,23 @@ Broker服务器启动后，会到对应的Topic节点下注册自己的BrokerID�
 通过Zookeeper的Watcher机制通知能够让生产者动态地获取Broker和Topic的变化情况。
 
 ### 消费者负载均衡
+因为不同的消费者组消费自己特定的Topic下面的消息，互不干扰，也不需要互相协调。因为消费者的负载均衡可以看作同一个消费者分组内部的消息消费策略。
 
+##### 消费者分区与消费者关系
+每个消费者分组，Kafka都会为其分配一个全局唯一的GroupID，并且为每个消费者分配一个ComsumerID。在Kafka中每个分区只能由一个消费者进行消息的消费，因此，Zookeeper上记录下消息分区与消费者之间的对应关系。
+每个消费者一旦确定了消息分区的消费权利，那么需要将其ConsumerID写入到对应消息分区的临时节点上，例如`/consumer/[group_id]/owners/[topic]/[broker_id-partition_id]`就是一个消息分区的标识，节点内容就是消费该分区上消息的消费者的ConsumerID
 
+##### Offset记录
+在消费者指定消息分区进行消息消费的过程中，需要将Offset记录到Zookeeper上去，以便在该消费者重启或是其他消费者重新接管该消息分区的消息消费后，可以从之前的进度开始继续进行消息的消费。Offset的节点路径为`/consumer/[group_id]/offsets/[topic]`
+`/broker_id-patition_id]`，其节点内容就是Offset的值。
+
+##### 消费者注册
+每个消费者服务在启动的时候，都会到Zookeeper的指定节点下创建一个属于自己的消费者节点，例如`/consumer/group_id/ids/[consumer_id]`
+完成节点创建后，消费者将订阅自己的Topic信息写入该节点。该节点是一个临时节点，当消费者服务器下线后，对应消费者节点就会被删掉。
+
+每个消费者都需要关注所属消费者组中消费者服务器的变化情况，即对`/comsumer/[group_id]/ids`节点注册子节点的Watcher监听，一旦发现消费者新增或减少，就会触发消费者负载均衡。
+
+消费者需要对`/broker/ids[0...N]`中的进行监听的注册，如果发现Broker服务器列表发生变化，那么就根据具体情况决定是否需要进行消费者的负载均衡。
 
 # 再均衡
 在kafka中，当消费者发生崩溃或者有新的消费者加入时，将会触发**再均衡**。
