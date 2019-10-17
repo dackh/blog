@@ -8,6 +8,8 @@
 ### 切换分支
 	git checkout [branch name]		//切换分支
 	git checkout -b [branch name]	//创建+切换分支，相当于git branch & git checkout
+### 将远程分支拉到本地
+	git fetch [remote branch]:[branch name]
 ### 推送新分支
 	git push origin [branch name]
 ### 删除分支
@@ -15,6 +17,8 @@
 	git push origin :[branch name]	//删除远端分支，分支前面的冒号代表删除
 
 	
+### git pull 跟 git fetch的区别
+git pull相当于git fetch跟git merge
 
 # git处理冲突
 

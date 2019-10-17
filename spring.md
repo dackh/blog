@@ -100,7 +100,7 @@ JDK代理跟CGLIB代理代理选择：
 ### **事务隔离级别**
 隔离级别指若干个并发的事务之间的隔离程度。TransactionDefinition接口中定义了五个表示隔离级别的常量：
 |常量|隔离级别|
-|--|--|
+|---|---|
 |TransactionDefinition.ISOLATION_DEFAULT|底层数据库的默认级别|
 |TransactionDefinition.ISOLATION_READ_UNCOMMITTED|读未提交|
 |TransactionDefinition.ISOLATION_READ_COMMITTED|都提交|
@@ -110,7 +110,7 @@ JDK代理跟CGLIB代理代理选择：
 ### **事务传播行为**
 所谓事务传播行为是指，如果在开始当前事务之前，一个事物上下文已经存在，此时有若干选项可以指定一个事务性方法的执行行为。在TransactionDefinition定义中包括了如下几个表示传播行为的常量：
 |常量|传播行为|传播行为|
-|--|--|
+|---|---|---|
 |TransactionDefinition_PROPAGATION_REQUIRED|存在->加入|不存在->新建|
 |TransactionDefinition_PROPAGATION_REQUIRED_NEW|存在->新建，挂起|不存在->新建|
 |TransactionDefinition_SUPPORTS|存在->加入|不存在->非事务
@@ -224,6 +224,28 @@ public interface FactoryBean<T>{
     boolean isSingleton();
 }
 ```
+
+# spring boot
+
+## 配置文件优先级
+- `src/main/resources/config/application.properties`  >  `src/main/resources/application.properties `
+- 相同位置的`application.properties`  >  `application.yml`
+
+
+## 注解解释
+### @Configuration
+JavaConfig的配置形式，配置了@Configuation之后，就是一个IoC容器的配置类。
+
+### @ComponentScan
+自动扫描并加载符合条件的组件（比如：@Component和@Repository等）或者Bean定义，最终将这些bean定义加载到IoC容器中。
+
+可以通过basePackage等属性细粒度的定制@ComponentScan自动扫描的范围，如果不指定，则默认Spring框架实现会从声明的@ComponentScan所在累的package进行扫描。
+
+所以这也是pringBoot的启动一般放在root package下的原因。因为默认不指定basePackages。
+
+
+
+## SpringApplicaiton执行流程
 
 
 # **内容参考**
