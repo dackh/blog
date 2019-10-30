@@ -475,3 +475,5 @@ interface可以存储任何具体的值，interface包括：
 尽管Go编译器产生的是本地可执行代码，这些代码仍旧运行在Go的runtime（这部分的代码可以在runtime包中找到）当中，这个runtime类似虚拟机，它负责管理包括内存分配、垃圾回收、栈处理、goroutine、channel、slice、map和reflection等等。
 
 
+# 交叉编译
+- `GOOS=linux GOARCH=amd64 go build main.go`
