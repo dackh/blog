@@ -1,0 +1,2 @@
+# SqlSession
+> SqlSession是MyBatis工作的最顶层的API会话接口，所有的数据库操作都是经由它来实现，由于它就是一个会话，既一个SqlSession应该仅存活一个业务请求中，也可以说一个SqlSession对应这一次数据库会话，它不是永久存活的，每次访问数据库时都需要创建它。

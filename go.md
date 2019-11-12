@@ -477,3 +477,6 @@ interface可以存储任何具体的值，interface包括：
 
 # 交叉编译
 - `GOOS=linux GOARCH=amd64 go build main.go`
+
+# vscode插件提示异常
+![vscode go 插件提示失效](https://magicly.me/go-vscodego-no-tip/)
