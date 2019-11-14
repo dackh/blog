@@ -463,6 +463,60 @@ JDK5.0中的类型：类、接口、枚举、注解。注解是跟其他三种�
 # **ArrayList如何扩容**
 默认数组大小为10，当超出数组大小时，1.5扩容，vector扩容元数组的2倍。
 
+# 动态代理
+JDK动态代理主要涉及到两个类：`java.lang.reflect.Proxy`和`java.lang.reflect.InvocationHandler`。
+
+
+逻辑处理器类实现`InvocationHandler`接口，并且维护代理对象，在`invoke`方法中编写方法调用的处理逻辑。
+``` Java
+public class LogHandler implements InvocationHandler{
+    Object target;  //被代理的对象，实际的方法的执行者
+
+    public LogHandler(Object target){
+        this.target = target;
+    }
+
+    @Override
+    public Object invoke(Object proxy,Method method,Object[] args) throws Throwable{
+        before();
+        Object result = method.invoke(target,args);     //调用target的method方法
+        after();
+        return result;
+    }
+
+    private void before(){}
+
+    private void after(){}
+}
+```
+获取动态生成的代理类对象须借助`Proxy`类的`newProxyInstance`方法。
+``` Java
+public class DynamicProxy{
+    public static void main(String[] args){
+        
+        //创建被代理对象，AService接口的实现类
+        AService aServiceImpl = new AServiceImpl();
+
+        //获取接口对应的 ClassLoader
+        ClassLoader classLoader = aServiceImpl.getClass().getClassLoader();
+
+        //获取所有接口的Class
+        Class[] interfaces = aServiceImpl.getClass().getInterfaces();
+
+        //创建一个将传给代理类的调用请求处理器
+        InvocationHandler logHanlder = new LogHandler(aServiceImpl);
+
+
+        AService proxy = (AService) Proxy.newProxyInstance(classLoader,interfaces,logHanlder);
+
+        proxy.run();
+        proxy.b();
+    }
+}
+
+```
+
+
 # **JDK动态代理跟CGLIB代理的区别**
 ### **JDK动态代理**
 代理对象和目标对象实现了相同的接口，目标对象作为代理对象的一个属性，具体的实现接口中，可以在调用目标对象相应方法前后加上其他业务处理逻辑。
