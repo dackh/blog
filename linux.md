@@ -184,6 +184,16 @@ lsof打开的文件可以是：
 - 邮件系统日志：/var/log/maillog
 - FTP系统日志：/var/log/xferlog
 
+# sftp命令
+### 登录
+`sftp -P 22 username@ip`
+
+# telnet命令
+telnet命令通常用于远程登录。telnet程序是基于TELNET协议的远程登录客户端程序，是TCP/IP协议族的一员。
+
+在终端使用telnet程序连接到服务器，终端使用者可以在telnet程序中输入命令，这些命令会在服务器上运行，就像直接在服务器的控制台上输入一样。
+
+
 # ip addr 
 linux的ip命令跟ifconfig类似，但是前者功能更强大，并旨在取代后者。
 
