@@ -516,7 +516,29 @@ public class DynamicProxy{
 
 ```
 
+# 项目路径
 
+## 代码
+``` java
+        log.info("this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();:"+PushFlowDataServiceImpl.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        log.info("this.getClass().getResource(\"/\").getPath():"+PushFlowDataServiceImpl.class.getResource("/").getPath());
+        log.info("this.getClass().getClassLoader().getResource(\"\"):"+PushFlowDataServiceImpl.class.getClassLoader().getResource(""));
+        log.info("System.getProperty(\"user.dir\"):"+System.getProperty("user.dir"));
+```
+
+## 不打jar
+``` java
+this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();:/Users/dack.huang/Public/Java/fund-partner-data-push/fund-partner-data-push-service/target/classes/
+this.getClass().getResource("/").getPath():/Users/dack.huang/Public/Java/fund-partner-data-push/fund-partner-data-push-service/target/classes/
+this.getClass().getClassLoader().getResource(""):file:/Users/dack.huang/Public/Java/fund-partner-data-push/fund-partner-data-push-service/target/classes/
+System.getProperty("user.dir"):/Users/dack.huang/Public/Java/fund-partner-data-push
+```
+
+### 打成jar
+``` java
+this.getClass().getResource("/").getPath():file:/home/pkg/packages/credit.plat_repay.fund_partner_data_push/1/bin/fund-partner-data-push-task.jar!/BOOT-INF/classes!/
+System.getProperty("user.dir"):/home/pkg/packages/credit.plat_repay.fund_partner_data_push/1
+```
 # **JDK动态代理跟CGLIB代理的区别**
 ### **JDK动态代理**
 代理对象和目标对象实现了相同的接口，目标对象作为代理对象的一个属性，具体的实现接口中，可以在调用目标对象相应方法前后加上其他业务处理逻辑。
