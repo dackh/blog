@@ -9,7 +9,7 @@
 
 # **Spring Bean的生命周期**
 
-![clipboard.png](https://segmentfault.com/img/bVbgwfO)
+![clipboard.png](https://image-static.segmentfault.com/666/864/666864349-5b9099fa064b4_articlex)
 
 ### **接口方法的分类**
 |分类类型|所包含方法|
@@ -74,6 +74,19 @@ Spring4.0开始IoC容器装配Bean有4种方式
     - request
     - session
 
+# Ioc容器
+Spring提供了两种容器类型：BeanFactory跟ApplicationContext
+
+![BeanFactory体系图](https://images2015.cnblogs.com/blog/249993/201609/249993-20160907110538348-921805562.png)
+## BeanFactory
+基础类型Ioc容器，提供了完整的Ioc服务支持，如果没有特殊指定，默认延迟初始化策略（lazy-load）。
+
+`BeanFactory`只是一个接口，`DefaultListableBeanFactory`是比较通用的`BeanFactory`的实现类，除了间接实现了`BeanFactory`接口之外，还实现了`BeanDefinitionRegistry`接口，该接口在BeanFactory的实现中担当Bean注册管理的角色。
+## ApplicationContext
+在BeanFactory的基础上构建，相对比较高级的容器实现，除了拥有BeanFactory的所有支持，ApplicationContext还提供了其他高级特性，比如事件发布、国际化信息支持等。
+
+ApplicationContext管理的对象在容器启动之后就初始化并绑定。
+
 # **AOP**
 AOP(Aspect Oriented Programming)，即面向切面编程，可以说的OOP面向对象编程的补充和完善，AOP使用一种“横切”的技术，剖解开封装的对象内部，并将那些影响多个类的公共行为封装到一个可重用的模块，并将其命名为“Aspect”，即切面。
 ### **AOP的核心概念**
@@ -93,14 +106,18 @@ JDK代理跟CGLIB代理代理选择：
 - JDK在创建代理对象的使用性能要高于CGLIB，在生成代理对象的时候性能要低于CGLIB。
 
 
+
+
+
 # **Spring事务**
 事务管理对企业应用而言至关重要，它保证每个用户的每一次操作都是可靠的。
 
 在Spring中，事务时通过TransactionDefinition接口来定义的。
 ### **事务隔离级别**
 隔离级别指若干个并发的事务之间的隔离程度。TransactionDefinition接口中定义了五个表示隔离级别的常量：
+
 |常量|隔离级别|
-|---|---|
+|--|--|
 |TransactionDefinition.ISOLATION_DEFAULT|底层数据库的默认级别|
 |TransactionDefinition.ISOLATION_READ_UNCOMMITTED|读未提交|
 |TransactionDefinition.ISOLATION_READ_COMMITTED|都提交|
@@ -109,8 +126,9 @@ JDK代理跟CGLIB代理代理选择：
 
 ### **事务传播行为**
 所谓事务传播行为是指，如果在开始当前事务之前，一个事物上下文已经存在，此时有若干选项可以指定一个事务性方法的执行行为。在TransactionDefinition定义中包括了如下几个表示传播行为的常量：
+
 |常量|传播行为|传播行为|
-|---|---|---|
+|--|--|--|
 |TransactionDefinition_PROPAGATION_REQUIRED|存在->加入|不存在->新建|
 |TransactionDefinition_PROPAGATION_REQUIRED_NEW|存在->新建，挂起|不存在->新建|
 |TransactionDefinition_SUPPORTS|存在->加入|不存在->非事务
