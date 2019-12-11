@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -159,3 +160,4 @@ func print() {
 	}
 	fmt.Println()
 }
+```
