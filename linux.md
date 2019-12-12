@@ -172,6 +172,16 @@ lsof打开的文件可以是：
 - `-v`：显示版本信息
 
 
+# 读取文件每一行并输出
+- [读取文件每一行并输出](https://www.cnblogs.com/iloveyoucc/archive/2012/07/10/2585529.html)
+
+
+# awk | sort | uniq | grep 等命令的使用
+
+```
+for file in file_list;do zgrep '服务异常查找TLoanDisplayInfoFlow表失败' ${file} | awk -F'|' '{print $5}' |sort|uniq | xargs -I {} zgrep {} gov_data_sync_daemon-2019-12-11.4.log.gz |grep '收到cmq:' | awk -F'收到cmq:' '{print $2}' | awk -F', 来自topic:' '{print "{\"data\":",$1,",\"cmq_topic\":\"",$2,"\"}"}' >>tmp.txt;done
+
+```
 
 # vim使用
 ## 查找
