@@ -111,7 +111,7 @@ kafka通过zookeeper来维护集群成员之间的关系，每个broker都有一
 ### 控制器
 控制器也是broker，同时还负责**分区首领的选举**。集群中第一个启动的broker通过在zookeeper里创建一个临时节点/controller让自己成为控制器。其他节点在该节点上创建watch对象，通过这种方式确保集群里只有一个控制器存在。
 
-如果控制器断开连接，其他监听的节点收到变更通知之后将会尝试创建controller节点成为控制器，只有第一个创建成功的才能成为控制器。
+ 
 
 ### 分区复制
 
@@ -172,6 +172,26 @@ kafka很大程度上依赖文件系统来存储和缓存消息，有一普遍的
 磁盘每次写入都会寻址->写入，其中寻址是最耗时的，所以对磁盘来说随机I/O是最慢的，为了提高磁盘的读写速度，kafka就是使用顺序I/O。
 
 [http://mmbiz.qpic.cn/mmbiz/nfxUjuI2HXjiahgInoFXLfVoghamdPiaBafMYrFo4rFUykuic1Ks0P5DBzxjVfzgYlscCWeicNnE3HrSKxJkCxOcEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1](http://mmbiz.qpic.cn/mmbiz/nfxUjuI2HXjiahgInoFXLfVoghamdPiaBafMYrFo4rFUykuic1Ks0P5DBzxjVfzgYlscCWeicNnE3HrSKxJkCxOcEw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+
+# 生产者
+## 发送消息到kafka
+- 同步发送，producer.send().get()  ，producer.send()返回一个Future对象，通过调用Future对象的get()方法等待kafka响应，如果服务返回错误，get()方法会抛出异常，get() 返回一个RecordMetadata对象，可以用它获取消息的偏移量。
+- 异步发送，大多数情况下并不需要等待发送消息的响应，不过在遇到消息发送失败的时候，还是需要对错误进行处理。生产者提供了回调支持，producer.send(record,new CallBack{})，其中record是ProductRecord对象，指消息内容，CallBack就是回调接口。
+
+## 序列化
+默认未字符串序列化器，kafka还提供了整形和字节数组序列化器，同时也支持自定义序列化序列化器。
+常见的序列化器包括json、avro、protobuf等
+- [序列化和反序列化 - 美团技术团队](https://tech.meituan.com/2015/02/26/serialization-vs-deserialization.html)
+
+## 分区
+生产者在发送的ProductRecord对象中包含了目标主题、键和值，Kafka消息是一个个键值对，ProducerRecord对象可以只包含目标主题和值，键可以设置为默认的null,不过大多数情况下都会用到键。
+键主要有两个用途：
+- 作为消息的附加信息。
+- 决定消息该被写到主题的哪个分区，拥有相同键的消息将被写到同一个分区。
+
+如果键值为null，并且使用默认的分区器，那么记录将被随机地发送到主题的各个分区可用分区上，分区器使用轮询算法。
+如果键值不为null，并且使用默认的分区器，那么Kafka会对键进行散列，然后根据散列值把消息映射到特定的分区上。即同一个键总是会被映射到同一个分区。
 
 
 
