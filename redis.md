@@ -317,6 +317,9 @@ Redis事务执行的一些情况：
 - 没有隔离级别的概念：队列中的命令没有提交之前都不会实际的执行，因为事务提交前任何指令都不会被实际执行。
 - 不保证原子性：redis同一个事务中如果有一条命令执行失败，其后的命令仍然会被执行，没有回滚。
 
+### 问题
+- 一段代码要执行多个redis命令，不加锁的情况下如何保持一致性？
+
 # **主从复制**
 Redis的复制也就是我们所说的主从复制，主机数据更新后根据配置和策略，自动同步到备机的master/slaver机制，master已写为主，slaver已读为主。
 
@@ -361,7 +364,7 @@ Redis提供的Sentinel(哨兵)机制，通过Sentinel模式启动Redis后，自�
 - [Redis 讲解系列之 Redis的事务][2]
 - [Redis 讲解系列之 Redis的复制(一)][3]
 - [Redis 讲解系列之 Redis的复制(二)][4]
-
+- [Redis事务](https://www.cnblogs.com/jason-xiang/p/5364252.html)
 
   [1]: https://blog.csdn.net/u012437781/article/details/78215590
   [2]: https://blog.csdn.net/u012437781/article/details/78216882
