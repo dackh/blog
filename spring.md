@@ -261,6 +261,9 @@ JavaConfig的配置形式，配置了@Configuation之后，就是一个IoC容器
 
 所以这也是pringBoot的启动一般放在root package下的原因。因为默认不指定basePackages。
 
+# 注解解释
+## import注解
+给容器导入组件。
 
 
 ## SpringApplicaiton执行流程
