@@ -1,5 +1,8 @@
 ##  ClassPathXmlApplicationContext
 
+####  ClassPathXmlApplicationContext类图
+![ClassPathXmlApplicationContext类图](../img/ClassPathXmlApplicationContext.png)
+
 先来看下spring最常使用的一个类、包括其方法
 ```java
 class ClassPathXmlApplicationContext{
@@ -307,6 +310,10 @@ protected final void refreshBeanFactory() throws BeansException {
 		}
 	}
 ```
+
+#### 看一下DefaultListableBeanFactory类图
+![DefaultListableBeanFactory](../img/DefaultListableBeanFactory.png)
+
 
 - 注：
   - BeanFactory是一个Bean容器，而BeanDefinition就是Bean的一种形式，它包含了Bean所指向的类，是否单例，是否懒加载，依赖关系的属性。
