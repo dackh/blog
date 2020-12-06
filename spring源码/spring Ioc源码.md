@@ -336,7 +336,7 @@ protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throw
 
 		// Allow a subclass to provide custom initialization of the reader,
 		// then proceed with actually loading the bean definitions.
-  	// 初始化BeanDefinitionReader
+  		// 初始化BeanDefinitionReader
 		initBeanDefinitionReader(beanDefinitionReader);
   	
 		loadBeanDefinitions(beanDefinitionReader);
@@ -344,14 +344,14 @@ protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throw
 
 
 protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeansException, IOException {
-  	//Resource对象及配置文件
+  		//Resource对象及配置文件
 		Resource[] configResources = getConfigResources();
 		if (configResources != null) {
 			reader.loadBeanDefinitions(configResources);
 		}
   
-  	//这里的location最后也转换为上面的Resource对象，添加进上面的Resource[]
-  	// 看下面的LoanBeanDefinitions
+  		//这里的location最后也转换为上面的Resource对象，添加进上面的Resource[]
+  		// 看下面的LoanBeanDefinitions
 		String[] configLocations = getConfigLocations();
 		if (configLocations != null) {
 			reader.loadBeanDefinitions(configLocations);
@@ -377,7 +377,7 @@ public int loadBeanDefinitions(Resource... resources) throws BeanDefinitionStore
 		for (Resource resource : resources) {
 			count += loadBeanDefinitions(resource);
 		}
-  	//返回加载的所有BeanDifinition的数量
+  		//返回加载的所有BeanDifinition的数量
 		return count;
 }
 
@@ -476,7 +476,7 @@ public int loadBeanDefinitions(String location, @Nullable Set<Resource> actualRe
 				if (encodedResource.getEncoding() != null) {
 					inputSource.setEncoding(encodedResource.getEncoding());
 				}
-        	//进行加载
+        		//进行加载
 				return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
 			}
 			finally {
