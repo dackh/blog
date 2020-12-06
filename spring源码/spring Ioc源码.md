@@ -279,24 +279,22 @@ protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
 
 
 protected final void refreshBeanFactory() throws BeansException {
-  	//判断当前的applicationContext是否存在BeanFactory，如果存在就销毁所有的Bean，关闭BeanFactory
+  		//判断当前的applicationContext是否存在BeanFactory，如果存在就销毁所有的Bean，关闭BeanFactory
   	
-  //TODO 这里有点疑问
-  // 注意，一个应用可以存在多个BeanFactory，这里判断的是当前ApplicationContext是否存在BeanFactory
-	
+  		// 这里判断的是当前ApplicationContext是否存在BeanFactory
 		if (hasBeanFactory()) {
 			destroyBeans();
 			closeBeanFactory();
 		}
 		try {
-      //初始化DefaultListableBeanFactory
+      		//初始化DefaultListableBeanFactory
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
       
-      //设置BeanFactory的两个配置属性，是否允许Bean覆盖，是否允许循环引用
+      		//设置BeanFactory的两个配置属性，是否允许Bean覆盖，是否允许循环引用
 			customizeBeanFactory(beanFactory);
       
-      //加载Bean到BeanFactory中
+      		//加载Bean到BeanFactory中
 			loadBeanDefinitions(beanFactory);
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;
