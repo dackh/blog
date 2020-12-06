@@ -215,17 +215,14 @@ public void refresh() throws BeansException,IllegalStateException{
       finishRefresh();
     }catch(BeansException e){
       if (logger.isWarnEnabled()) {
-					logger.warn("Exception encountered during context initialization - " +
-							"cancelling refresh attempt: " + ex);
-				}
-
-				// 销毁bean
-				destroyBeans();
-
-				// 重置 'active' 标志.
-				cancelRefresh(ex);
-
-				throw ex;
+		logger.warn("Exception encountered during context initialization - " +
+				"cancelling refresh attempt: " + ex);
+	}
+	// 销毁bean
+	destroyBeans();
+	// 重置 'active' 标志.
+	cancelRefresh(ex);
+	throw ex;
     }
   }
 }
@@ -238,32 +235,32 @@ public void refresh() throws BeansException,IllegalStateException{
 
 ```java
 protected void prepareRefresh() {
-		this.startupDate = System.currentTimeMillis();
-		this.closed.set(false);
-		this.active.set(true);
+	this.startupDate = System.currentTimeMillis();
+	this.closed.set(false);
+	this.active.set(true);
 
-		if (logger.isDebugEnabled()) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Refreshing " + this);
-			}
-			else {
-				logger.debug("Refreshing " + getDisplayName());
-			}
+	if (logger.isDebugEnabled()) {
+		if (logger.isTraceEnabled()) {
+			logger.trace("Refreshing " + this);
 		}
-
-		// Initialize any placeholder property sources in the context environment
-    // 初始化加载配置文件方法，并没有具体实现，一个留给用户的扩展点
-		initPropertySources();
-
-		// Validate that all properties marked as required are resolvable
-		// see ConfigurablePropertyResolver#setRequiredProperties
-  	//验证所有标记为必须的属性，此处没有进行任何必须的配置，所以验证通过
-		getEnvironment().validateRequiredProperties();
-
-		// Allow for the collection of early ApplicationEvents,
-		// to be published once the multicaster is available...
-		this.earlyApplicationEvents = new LinkedHashSet<>();
+		else {
+			logger.debug("Refreshing " + getDisplayName());
+		}
 	}
+
+	// Initialize any placeholder property sources in the context environment
+    // 初始化加载配置文件方法，并没有具体实现，一个留给用户的扩展点
+	initPropertySources();
+
+	// Validate that all properties marked as required are resolvable
+	// see ConfigurablePropertyResolver#setRequiredProperties
+  	//验证所有标记为必须的属性，此处没有进行任何必须的配置，所以验证通过
+	getEnvironment().validateRequiredProperties();
+
+	// Allow for the collection of early ApplicationEvents,
+	// to be published once the multicaster is available...
+	this.earlyApplicationEvents = new LinkedHashSet<>();
+}
 
 ```
 
@@ -412,12 +409,12 @@ public int loadBeanDefinitions(String location, @Nullable Set<Resource> actualRe
 		if (resourceLoader instanceof ResourcePatternResolver) {
 			// Resource pattern matching available.
 			try {
-        //通过location将配置文件转换成Resource对象
+        		//通过location将配置文件转换成Resource对象
 				Resource[] resources = ((ResourcePatternResolver) resourceLoader).getResources(location);
-        //回到了上面的方法
+        		//回到了上面的方法
 				int count = loadBeanDefinitions(resources);
 				if (actualResources != null) {
-          //添加给Resources[] 中
+          		//添加给Resources[] 中
 					Collections.addAll(actualResources, resources);
 				}
 				if (logger.isTraceEnabled()) {
@@ -474,14 +471,14 @@ public int loadBeanDefinitions(String location, @Nullable Set<Resource> actualRe
 					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
 		}
 		try {
-      //获取到文件流
+      		//获取到文件流
 			InputStream inputStream = encodedResource.getResource().getInputStream();
 			try {
 				InputSource inputSource = new InputSource(inputStream);
 				if (encodedResource.getEncoding() != null) {
 					inputSource.setEncoding(encodedResource.getEncoding());
 				}
-        //进行加载
+        	//进行加载
 				return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
 			}
 			finally {
@@ -510,9 +507,9 @@ protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 			throws BeanDefinitionStoreException {
 
 		try {
-      //文件转换  将xml文件转换成Document对象
+      		//文件转换  将xml文件转换成Document对象
 			Document doc = doLoadDocument(inputSource, resource);
-      //根据Document对象注册Bean  真相快到了
+      		//根据Document对象注册Bean  真相快到了
 			int count = registerBeanDefinitions(doc, resource);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Loaded " + count + " bean definitions from " + resource);
@@ -551,21 +548,21 @@ protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 
 ```java
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
-    //构建读取Document的工具类
+    	//构建读取Document的工具类
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
-    //获取已注册的Bean数量
+    	//获取已注册的Bean数量
 		int countBefore = getRegistry().getBeanDefinitionCount();
-    //进行注册
+    	//进行注册
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
     
-    //总数量  -  之前注册的bean数量
+    	//总数量  -  之前注册的bean数量
 		return getRegistry().getBeanDefinitionCount() - countBefore;
 	}
 
 
 	public void registerBeanDefinitions(Document doc, XmlReaderContext readerContext) {
 		this.readerContext = readerContext;
-    //这里doc.getDocumentElement()是获取Document对象的跟节点  Element对象
+    	//这里doc.getDocumentElement()是获取Document对象的跟节点  Element对象
 		doRegisterBeanDefinitions(doc.getDocumentElement());
 	}
 
@@ -578,13 +575,13 @@ protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 		// then ultimately reset this.delegate back to its original (parent) reference.
 		// this behavior emulates a stack of delegates without actually necessitating one.
     
-    //BeanDefinitionParseDelegate的作用是用来根据解析文件的结果来生成Bean的实例
+    	//BeanDefinitionParseDelegate的作用是用来根据解析文件的结果来生成Bean的实例
 		BeanDefinitionParserDelegate parent = this.delegate;
 		this.delegate = createDelegate(getReaderContext(), root, parent);
 
 		if (this.delegate.isDefaultNamespace(root)) {
-      //获取<beans ... profile="***" /> 中的profile参数与当前环境是否匹配 
-      // 如果不匹配则不进行解析
+      		//获取<beans ... profile="***" /> 中的profile参数与当前环境是否匹配 
+      		// 如果不匹配则不进行解析
 			String profileSpec = root.getAttribute(PROFILE_ATTRIBUTE);
 			if (StringUtils.hasText(profileSpec)) {
 				String[] specifiedProfiles = StringUtils.tokenizeToStringArray(
@@ -601,13 +598,13 @@ protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 			}
 		}
 		
-    //前置扩展点
+    	//前置扩展点
 		preProcessXml(root);
    	
-    //继续解析
+    	//继续解析
 		parseBeanDefinitions(root, this.delegate);
     
-    //后置扩展点
+    	//后置扩展点
 		postProcessXml(root);
 
 		this.delegate = parent;
@@ -619,7 +616,7 @@ protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 
 
 
-####parseBeanDefinitions
+#### parseBeanDefinitions
 
 ```java
 protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate delegate) {
@@ -639,7 +636,7 @@ protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate d
 				}
 			}
 		}
-  	// 解析其他 namespace 的元素
+  		// 解析其他 namespace 的元素
 		else {
 			delegate.parseCustomElement(root);
 		}
@@ -652,15 +649,15 @@ protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate d
     if (delegate.nodeNameEquals(ele, IMPORT_ELEMENT)) {
 			importBeanDefinitionResource(ele);
 		}
-    //alias标签
+    	//alias标签
 		else if (delegate.nodeNameEquals(ele, ALIAS_ELEMENT)) {
 			processAliasRegistration(ele);
 		}
-    //bean标签
+    	//bean标签
 		else if (delegate.nodeNameEquals(ele, BEAN_ELEMENT)) {
 			processBeanDefinition(ele, delegate);
 		}
-    //beans标签
+   		//beans标签
 		else if (delegate.nodeNameEquals(ele, NESTED_BEANS_ELEMENT)) {
 			// recurse
 			doRegisterBeanDefinitions(ele);
@@ -668,7 +665,7 @@ protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate d
 	}
 
 
-//看一下bean标签处理
+	//看一下bean标签处理
 	protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
 		
     //分析各个属性并转化为bean实例
@@ -677,7 +674,7 @@ protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate d
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
 				// Register the final decorated instance.
-        // 注册bean实例
+        		// 注册bean实例
 				BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
 			}
 			catch (BeanDefinitionStoreException ex) {
@@ -720,23 +717,22 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 	}
 
 	public BeanDefinitionHolder parseBeanDefinitionElement(Element ele, @Nullable BeanDefinition containingBean) {
-    //获取bean id
+    	//获取bean id
 		String id = ele.getAttribute(ID_ATTRIBUTE);
     
-    //获取bean name
+    	//获取bean name
 		String nameAttr = ele.getAttribute(NAME_ATTRIBUTE);
 		
-    //别名
+    	//别名
 		List<String> aliases = new ArrayList<>();
     
-    //将 name 属性的定义按照 “逗号、分号、空格” 切分，形成一个 别名列表数组，
-
+    	//将 name 属性的定义按照 “逗号、分号、空格” 切分，形成一个 别名列表数组，
 		if (StringUtils.hasLength(nameAttr)) {
 			String[] nameArr = StringUtils.tokenizeToStringArray(nameAttr, MULTI_VALUE_ATTRIBUTE_DELIMITERS);
 			aliases.addAll(Arrays.asList(nameArr));
 		}
 		
-    //如果没有指定id，那么用别名列表的第一个名字作为beanName
+    	//如果没有指定id，那么用别名列表的第一个名字作为beanName
 		String beanName = id;
 		if (!StringUtils.hasText(beanName) && !aliases.isEmpty()) {
 			beanName = aliases.remove(0);
@@ -750,11 +746,11 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 			checkNameUniqueness(beanName, aliases, ele);
 		}
 		
-    //根据<bean ...></bean>中的配置创建BeanDefinition,然后把配置中的信息都设置到实例中
-    //parseBeanDefinitionElement这里就创建了一个BeanDefinition
+    	//根据<bean ...></bean>中的配置创建BeanDefinition,然后把配置中的信息都设置到实例中
+    	//parseBeanDefinitionElement这里就创建了一个BeanDefinition
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
-      //如果没有id和name，那么此时的beanName会为null
+      		//如果没有id和name，那么此时的beanName会为null
 			if (!StringUtils.hasText(beanName)) {
 				try {
 					if (containingBean != null) {
@@ -771,7 +767,7 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 								beanName.startsWith(beanClassName) && beanName.length() > beanClassName.length() &&
 								!this.readerContext.getRegistry().isBeanNameInUse(beanClassName)) {
               
-              //把BeanClassName设置为bean的别名
+              				//把BeanClassName设置为bean的别名
 							aliases.add(beanClassName);
 						}
 					}
@@ -787,7 +783,7 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 			}
 			String[] aliasesArray = StringUtils.toStringArray(aliases);
       
-      //返回生成的一个beanDefinitionHolder对象
+      		//返回生成的一个beanDefinitionHolder对象
 			return new BeanDefinitionHolder(beanDefinition, beanName, aliasesArray);
 		}
 
@@ -886,12 +882,12 @@ public AbstractBeanDefinition parseBeanDefinitionElement(
 			throws BeanDefinitionStoreException {
 
 		// Register bean definition under primary name.
-    //注册这个bean
+    	//注册这个bean
 		String beanName = definitionHolder.getBeanName();
 		registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
 
 		// Register aliases for bean name, if any.
-    //如果有别名的话，全都注册一遍
+    	//如果有别名的话，全都注册一遍
 		String[] aliases = definitionHolder.getAliases();
 		if (aliases != null) {
 			for (String alias : aliases) {
@@ -922,9 +918,9 @@ public AbstractBeanDefinition parseBeanDefinitionElement(
     //判断是否注册过
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
     
-    //有重复名字的Bean
+    	//有重复名字的Bean
 		if (existingDefinition != null) {
-      //不允许覆盖，报错
+      		//不允许覆盖，报错
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
 			}
@@ -950,24 +946,24 @@ public AbstractBeanDefinition parseBeanDefinitionElement(
 							"] with [" + beanDefinition + "]");
 				}
 			}
-      //覆盖
+      		//覆盖
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else 
-      //判断是否已经有其他的Bean开始初始化
-      //注册bean时，bean还没初始化，在spring容器启动完毕之后，才会预初始化所有的singleton beans
+      		//判断是否已经有其他的Bean开始初始化
+      		//注册bean时，bean还没初始化，在spring容器启动完毕之后，才会预初始化所有的singleton beans
 			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				synchronized (this.beanDefinitionMap) {
 					this.beanDefinitionMap.put(beanName, beanDefinition);
           
-          //TODO 这里不是很理解
+          			//TODO 这里不是很理解
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);
 					updatedDefinitions.add(beanName);
 					this.beanDefinitionNames = updatedDefinitions;
           
-          //手动注册的singleton bean
+          			//手动注册的singleton bean
 					if (this.manualSingletonNames.contains(beanName)) {
 						Set<String> updatedSingletons = new LinkedHashSet<>(this.manualSingletonNames);
 						updatedSingletons.remove(beanName);
@@ -977,13 +973,13 @@ public AbstractBeanDefinition parseBeanDefinitionElement(
 			}
 			else {
 				// Still in startup registration phase
-        // 将 BeanDefinition 放到这个 map 中，这个 map 保存了所有的 BeanDefinition
+        		// 将 BeanDefinition 放到这个 map 中，这个 map 保存了所有的 BeanDefinition
 				this.beanDefinitionMap.put(beanName, beanDefinition);
         
-        // 这是个 ArrayList，所以会按照 bean 配置的顺序保存每一个注册的 Bean 的名字
+        		// 这是个 ArrayList，所以会按照 bean 配置的顺序保存每一个注册的 Bean 的名字
 				this.beanDefinitionNames.add(beanName);
         
-        // 这是个 LinkedHashSet，代表的是手动注册的 singleton bean，
+        		// 这是个 LinkedHashSet，代表的是手动注册的 singleton bean，
 				this.manualSingletonNames.remove(beanName);
 			}
 			this.frozenBeanDefinitionNames = null;
