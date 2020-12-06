@@ -861,16 +861,9 @@ public AbstractBeanDefinition parseBeanDefinitionElement(
    return null;
 }
 ```
-
- 
-
 到这里一个BeanDefinition对象就出来了。
 
-
-
-我们接下来回到Bean的注册
-
-
+接下来回到Bean的注册
 
 #### registerBeanDefinition
 
