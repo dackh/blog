@@ -13,7 +13,7 @@ Explanation: The minimum number of jumps to reach the last index is 2.
     Jump 1 step from index 0 to 1, then 3 steps to the last index.
 ```
 
-```
+```java
 class Solution {
     public int jump(int[] nums) {
         if(nums.length <= 1){
@@ -53,7 +53,7 @@ Given linked list: 1->2->3->4->5, and n = 2.
 After removing the second node from the end, the linked list becomes 1->2->3->5.
 ```
 
-```
+```java
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -110,7 +110,7 @@ For k = 2, you should return: 2->1->4->3->5
 For k = 3, you should return: 3->2->1->4->5
 ```
 
-```
+```java
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -154,7 +154,7 @@ Input: (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
 Output: 7 -> 8 -> 0 -> 7
 ```
 
-```
+```java
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -201,7 +201,7 @@ Input: 1->2->2->1
 Output: true
 ```
 
-```
+```java
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -278,7 +278,7 @@ Given binary tree `[3,9,20,null,null,15,7],`
 
 return its depth = 3.
 
-```
+```java
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -297,6 +297,47 @@ class Solution {
     }
 }
 ```
+### [111. Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int minDepth(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+        
+        if(root.left == null){
+            return minDepth(root.right) + 1;
+        }else if(root.right == null){
+            return minDepth(root.left) + 1;
+        }else{
+            return Math.min(minDepth(root.left),minDepth(root.right)) + 1;
+        }
+        
+        
+    }
+}
+```
+
 
 ### [110. Balanced Binary Tree][7]
 Given a binary tree, determine if it is height-balanced.
