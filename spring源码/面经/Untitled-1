@@ -1,0 +1,28 @@
+public class Main{
+
+    
+    public int selotion(int n){
+        int left = 0,right = n;
+        int mid = (left + right) / 2;
+        int res = guess(mid);
+        while(res != 0){
+            if(res == 1){
+                right = mid -1;
+            }else if(res == -1){
+                left = mid + 1;
+            }else{
+                //非法值
+                return -1;
+            }
+            mid = (left + right) / 2;
+            res = guess(mid);
+        }
+        return mid;
+    }
+
+    private int guess(int num){
+        ///
+
+        //return ;
+    }
+}
