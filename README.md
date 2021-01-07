@@ -20,6 +20,7 @@
 - [linux](https://github.com/dackh/blog/blob/master/linux.md)
 - [正则表达式](https://github.com/dackh/blog/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
 - [IO模型](https://github.com/dackh/blog/blob/master/IO%E6%A8%A1%E5%9E%8B.md)
+- [设计模式](https://github.com/dackh/blog/blob/master/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md)
 ## 架构相关
 
 - [git总结](https://github.com/dackh/blog/blob/master/git.md)
