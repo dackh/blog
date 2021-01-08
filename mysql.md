@@ -14,7 +14,7 @@ REPEATABLE READ隔离级别下，MVCC的实现：
 - DELETE
     - InnoDB为删除的每一行保存当前系统版本号作为行删除标识。
 - UPDATE
-    - InnoDB为插入一航新记录，保存当前系统版本号作为行版本号，同时保存当前系统版本号到原来的行作为行删除版本号。
+    - InnoDB为插入一行新记录，保存当前系统版本号作为行版本号，同时保存当前系统版本号到原来的行作为行删除版本号。
 MVCC只在REPEATABLE READ跟READ COMMITED两个隔离级别工作。其他两个隔离级别都和MVCC不兼容。因为READ UNCOMMITED总是读取最新的数据行，而不是符合当前事务版本的数据行。而SERIALIZABLE则会对所有读取的数据的行都加锁。
 # **存储引擎**
 ### **InnoDB存储引擎**
