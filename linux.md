@@ -1,3 +1,80 @@
+# awk | sort | uniq | grep 等命令的使用
+
+## awk
+awk是处理文本文件的一个应用程序，几乎所有linux系统都自带这个程序。
+
+### 基本用法
+```shell
+# 格式
+awk 动作 文件
+
+awk '{print $0}' all.log
+# 打印all.log 当前行数据  $0代表当前行  '{}'表示动作
+
+echo 'this is a log' | awk '{print $0}' 
+this is a log
+# awk 会根据空格跟制表符，将每一行分成若干部分，依次用$1,$2代表第几个字段。
+
+# 指定分隔符
+awk -F ',' '{print $1}' all.log
+```
+### 变量
+`$ + 数字`表示第几个字段，awk还提供了一些变量，`NF`表示当前有多少行，因此`$NF表示最后一个字段`。
+`NR`表示第几行。
+```shell
+awk -F ',' '{print $1, $(NF-1)}' all.log
+
+# 上面代码中，print命令里面的逗号，表示输出的时候，两个部分之间使用空格分隔，如果要原样输出，放在双引号里面。
+
+awk -F ',' '{print NR ") " $1}' all.log
+1) xxx
+2) xxx
+3) xxx
+```
+其他变量：
+- FILENAME : 当前文件名
+- FS : 字段分隔符，默认是空格和制表符
+- RSRS：行分隔符，用于分割每一行，默认是换行符。
+- OFS：输出字段的分隔符，用于打印时分隔字段，默认为空格。
+- ORS：输出记录的分隔符，用于打印时分隔记录，默认为换行符。
+- OFMT：数字输出的格式，默认为％.6g
+
+### 函数
+awk还提供了一些内置函数，方便对原始数据的处理。
+- toupper() ：转换为大写
+- tolower() ： 转换为小写
+- length() : 字符串长度
+- substr()：子字符串
+
+```shell
+awk -F ',' '{print toupper($1)}' all.log
+```
+### 条件
+```shell
+awk '条件 动作' 文件
+
+# 输出包含aa的行
+awk -F ',' 'aa {print $1}' all.log
+
+# 输出奇数行
+awk -F ',' 'NR % 2 == 1 {print $1}' all.log
+
+# 输出第三行之后
+awk -F ',' 'NR > 3 {print $1}' all.log
+
+# 指定指定字段等于指定值
+awk -F ',' '$1 == "aa" || $1 == "bb" {print $1}' all.log
+```
+
+### if语句
+awk还提供了if结构，用于编写复杂的条件。
+```
+for file in file_list;do zgrep '服务异常查找TLoanDisplayInfoFlow表失败' ${file} | awk -F'|' '{print $5}' |sort|uniq | xargs -I {} zgrep {} gov_data_sync_daemon-2019-12-11.4.log.gz |grep '收到cmq:' | awk -F'收到cmq:' '{print $2}' | awk -F', 来自topic:' '{print "{\"data\":",$1,",\"cmq_topic\":\"",$2,"\"}"}' >>tmp.txt;done
+
+```
+
+
+
 # 链接 ln
 为某一个文件在另外一个位置创建一个同步的链接，常用参数 `-s`，进行软链接
 
@@ -176,45 +253,6 @@ lsof打开的文件可以是：
 - [读取文件每一行并输出](https://www.cnblogs.com/iloveyoucc/archive/2012/07/10/2585529.html)
 
 
-# awk | sort | uniq | grep 等命令的使用
-
-## awk
-awk是处理文本文件的一个应用程序，几乎所有linux系统都自带这个程序。
-
-### 基本用法
-```shell
-# 格式
-awk 动作 文件
-
-awk '{print $0}' all.log
-# 打印all.log 当前行数据  $0代表当前行  '{}'表示动作
-
-echo 'this is a log' | awk '{print $0}' 
-this is a log
-# awk 会根据空格跟制表符，将每一行分成若干部分，依次用$1,$2代表第几个字段。
-
-# 指定分隔符
-echo -F ',' '{print $1}' all.log
-```
-### 变量
-`$ + 数字`表示第几个字段，awk还提供了一些变量，`NF`表示当前有多少行，因此`$NF表示最后一个字段`。
-`NR`表示第几行。
-```shell
-echo -F ',' '{print $1, $(NF-1)}' all.log
-
-# 上面代码中，print命令里面的逗号，表示输出的时候，两个部分之间使用空格分隔，如果要原样输出，放在双引号里面。
-
-echo -F ',' '{print NR ") " $1}' all.log
-1) xxx
-2) xxx
-3) xxx
-```
-
-```
-for file in file_list;do zgrep '服务异常查找TLoanDisplayInfoFlow表失败' ${file} | awk -F'|' '{print $5}' |sort|uniq | xargs -I {} zgrep {} gov_data_sync_daemon-2019-12-11.4.log.gz |grep '收到cmq:' | awk -F'收到cmq:' '{print $2}' | awk -F', 来自topic:' '{print "{\"data\":",$1,",\"cmq_topic\":\"",$2,"\"}"}' >>tmp.txt;done
-
-```
-
 # vim使用
 ## 查找
 在normal模式下按下`/`即可进入查找模式，输入要查找的字符串并按下回车，vim会跳到第一个匹配的位置，按`n`查找写一个，`N`查找上一个。
@@ -305,5 +343,6 @@ linux下一般想让某个程序在后台运行，一般使用`&`
 
 # 参考
 - 鸟哥的linux私房菜基础学习篇
+- [awk 入门教程](http://www.ruanyifeng.com/blog/2018/11/awk.html)
 - [试试Linux下的ip命令，ifconfig已经过时了](试试Linux下的ip命令，ifconfig已经过时了 "https://linux.cn/article-3144-1.html")
 - [Linux的五个查找命令：find,locate,whereis,which,type](Linux的五个查找命令：find,locate,whereis,which,type "http://www.kuqin.com/linux/20091009/70532.html")
