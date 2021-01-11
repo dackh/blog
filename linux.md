@@ -120,6 +120,7 @@ sed '/url/d' all.log
 ### 动作说明
 格式：`[n1[,n2]]function`：n1,n2：不见得会存在，一般代表[选择进行动作的行数]。
 
+```
 function：
 a：新增，后面接字符串，在下一行出现
 c：取代，后面接字符串，替代n1,n2的行
@@ -127,9 +128,6 @@ d：删除
 i：插入，后面接字符串，在上一行出现
 p：列印
 s：取代
-```
-for file in file_list;do zgrep '服务异常查找TLoanDisplayInfoFlow表失败' ${file} | awk -F'|' '{print $5}' |sort|uniq | xargs -I {} zgrep {} gov_data_sync_daemon-2019-12-11.4.log.gz |grep '收到cmq:' | awk -F'收到cmq:' '{print $2}' | awk -F', 来自topic:' '{print "{\"data\":",$1,",\"cmq_topic\":\"",$2,"\"}"}' >>tmp.txt;done
-
 ```
 
 
