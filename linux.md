@@ -4,7 +4,7 @@
 awk是处理文本文件的一个应用程序，几乎所有linux系统都自带这个程序。
 
 ### 基本用法
-```shell
+```sh
 # 格式
 awk 动作 文件
 
@@ -21,7 +21,7 @@ awk -F ',' '{print $1}' all.log
 ### 变量
 `$ + 数字`表示第几个字段，awk还提供了一些变量，`NF`表示当前有多少行，因此`$NF表示最后一个字段`。
 `NR`表示第几行。
-```shell
+```sh
 awk -F ',' '{print $1, $(NF-1)}' all.log
 
 # 上面代码中，print命令里面的逗号，表示输出的时候，两个部分之间使用空格分隔，如果要原样输出，放在双引号里面。
@@ -46,11 +46,11 @@ awk还提供了一些内置函数，方便对原始数据的处理。
 - length() : 字符串长度
 - substr()：子字符串
 
-```shell
+```sh
 awk -F ',' '{print toupper($1)}' all.log
 ```
 ### 条件
-```shell
+```sh
 awk '条件 动作' 文件
 
 # 输出包含aa的行
@@ -68,6 +68,8 @@ awk -F ',' '$1 == "aa" || $1 == "bb" {print $1}' all.log
 
 ### if语句
 awk还提供了if结构，用于编写复杂的条件。
+
+
 ```
 for file in file_list;do zgrep '服务异常查找TLoanDisplayInfoFlow表失败' ${file} | awk -F'|' '{print $5}' |sort|uniq | xargs -I {} zgrep {} gov_data_sync_daemon-2019-12-11.4.log.gz |grep '收到cmq:' | awk -F'收到cmq:' '{print $2}' | awk -F', 来自topic:' '{print "{\"data\":",$1,",\"cmq_topic\":\"",$2,"\"}"}' >>tmp.txt;done
 
