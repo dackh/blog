@@ -1,5 +1,4 @@
-# awk | sort | uniq | grep 等命令的使用
-
+# 常用文本命令
 ## awk
 awk是处理文本文件的一个应用程序，几乎所有linux系统都自带这个程序。
 
@@ -70,6 +69,64 @@ awk -F ',' '$1 == "aa" || $1 == "bb" {print $1}' all.log
 awk还提供了if结构，用于编写复杂的条件。
 
 
+## grep 
+grep (global search regular expreession and print out the line,全局搜索正则表达式并把行打印出来)。
+
+### 基本用法
+```sh
+grep [options] pattern [file...]
+
+#options 选项，pattern匹配文本、变量或者正则表达式，file表示文件，可以多个
+
+# 匹配包含数字的文本行
+grep -E '[1-9]+' all.log
+```
+#### 选项
+常用选项
+```sh
+-a : 只显示行数
+-i : 忽略大小写
+-h : 搜索多个文件，不显示文件名前缀
+-n : 行号+文本行
+-v : 不匹配的文本行
+-w : 匹配整个单词
+-r : 递归搜索，搜索当前目录跟子目录
+-x : 匹配整个文本行
+-E : 匹配正则表达式
+```
+## sed
+sed是一种在线编辑器，它一次处理一行内容。处理时，把当前处理的行存储在临时缓冲区中，称为"模式空间(pattern space)"，接着用sed命令处理缓冲区的内容，
+处理完成后，把缓冲区的内容送往屏幕。接着处理下一行，这样不断重复，文件并没有改变。除非使用重定向存储输出。
+
+sed主要用于自动编辑一个或多个文件。
+
+### 基本用法
+```sh
+sed [option] 动作
+
+# option是选项
+
+# 删除包含url的行
+sed '/url/d' all.log
+```
+### 选项
+```sh
+-n：仅显示scrpit处理后的结果。
+-e<script>: 以选项中的script来处理输入的文本文件。
+-f<script文件>：以选项中的script文件来处理输入的文本文件。
+-i：直接修改读取文件的内容，而不是输出到终端。
+```
+
+### 动作说明
+格式：`[n1[,n2]]function`：n1,n2：不见得会存在，一般代表[选择进行动作的行数]。
+
+function：
+a：新增，后面接字符串，在下一行出现
+c：取代，后面接字符串，替代n1,n2的行
+d：删除
+i：插入，后面接字符串，在上一行出现
+p：列印
+s：取代
 ```
 for file in file_list;do zgrep '服务异常查找TLoanDisplayInfoFlow表失败' ${file} | awk -F'|' '{print $5}' |sort|uniq | xargs -I {} zgrep {} gov_data_sync_daemon-2019-12-11.4.log.gz |grep '收到cmq:' | awk -F'收到cmq:' '{print $2}' | awk -F', 来自topic:' '{print "{\"data\":",$1,",\"cmq_topic\":\"",$2,"\"}"}' >>tmp.txt;done
 
