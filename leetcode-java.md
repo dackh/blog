@@ -1,3 +1,124 @@
+### [1. Two Sum](https://leetcode.com/problems/two-sum/)
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int[] res = new int[2];
+        Map<Integer,Integer> map = new HashMap<>();
+        
+        for(int i = 0;i<nums.length;i++){
+            if(map.containsKey(target - nums[i])){
+                res[0] = i;
+                res[1] = map.get(target - nums[i]);
+                return res;
+            }else{
+                map.put(nums[i],i);
+            }
+        }
+        
+        return res;
+    }
+}
+```
+
+### [136. Single Number](https://leetcode.com/problems/single-number/)
+Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+Follow up: Could you implement a solution with a linear runtime complexity and without using extra memory?
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        int res = 0;
+        for(int num : nums){
+            res ^= num;
+        }
+        return res;
+    }
+}
+```
+### [169. Majority Element](https://leetcode.com/problems/majority-element/)
+Given an array nums of size n, return the majority element.
+
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+        
+        int res = nums[0],count = 1;
+        for(int i = 1;i<nums.length;i++){
+            if(count == 0){
+                count++;
+                res = nums[i];
+            }else if(res == nums[i]){
+                count++;
+            }else{
+                count--;
+            }
+        }
+        return res;
+    }
+}
+```
+
+### [240. Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/)
+Write an efficient algorithm that searches for a target value in an m x n integer matrix. The matrix has the following properties:
+
+Integers in each row are sorted in ascending from left to right.
+Integers in each column are sorted in ascending from top to bottom.
+
+```java
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int i = 0,j = matrix[0].length - 1;
+        
+        while(i < matrix.length && j >= 0){
+            if(matrix[i][j] == target){
+                return true;
+            }else if(matrix[i][j] > target){
+                j--;
+            }else{
+                i++;
+            }
+        }
+        return false;
+    }   
+}
+```
+
+### [88. Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
+Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+
+The number of elements initialized in nums1 and nums2 are m and n respectively. You may assume that nums1 has enough space (size that is equal to m + n) to hold additional elements from nums2.
+
+```java
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m - 1,j = n-1,index = m + n - 1;
+        
+        while(i >= 0 && j >= 0){
+            if(nums1[i] > nums2[j]){
+                nums1[index--] = nums1[i--]; 
+            }else{
+                nums1[index--] = nums2[j--];
+            }
+        }
+        while(i >= 0){
+            nums1[index--] = nums1[i--];
+        }
+        
+        while(j >= 0){
+            nums1[index--] = nums2[j--];
+        }
+    }
+}
+
+```
+
 # **贪心**
 ### [45.Jump Game II][1]
 Given an array of non-negative integers, you are initially positioned at the first index of the array.
