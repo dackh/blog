@@ -203,7 +203,7 @@ KafkaConsumer API提供了很多种方式来提交偏移量。
 - [Kafka副本同步机制理解](https://blog.csdn.net/lizhitao/article/details/51718185)
 - [Kafka深度解析](http://www.jasongj.com/2015/01/02/Kafka%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/)
 
-
+- [kafka消息丢失](https://juejin.cn/post/6844904094021189639)
 
 # 参考
 - kafka权威指南 

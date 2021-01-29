@@ -516,6 +516,12 @@ public class DynamicProxy{
 
 ```
 
+
+# 反射
+- [反射为什么慢](https://blog.csdn.net/xqlovetyj/article/details/82798864)
+- 都是委派，只是委派的方式有两种：委派给本地/委派给动态实现
+
+
 # 项目路径
 
 ## 代码
