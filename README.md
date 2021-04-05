@@ -25,8 +25,8 @@
 
 - [git总结](https://github.com/dackh/blog/blob/master/git.md)
 - [集群](https://github.com/dackh/blog/blob/master/%E9%9B%86%E7%BE%A4.md)
-- [分布式](https://github.com/dackh/blog/blob/master/%E5%88%86%E5%B8%83%E5%BC%8F.md)
-
+- [分布式](https://github.com/dackh/blog/blob/master/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%88%86%E5%B8%83%E5%BC%8F.md)
+- [raft](https://github.com/dackh/blog/blob/master/%E5%88%86%E5%B8%83%E5%BC%8F/raft%E7%AE%97%E6%B3%95.md)
 ## 中间件
 - [docker](https://github.com/dackh/blog/blob/master/docker.md)
 - [kafka](https://github.com/dackh/blog/blob/master/kafka.md)
