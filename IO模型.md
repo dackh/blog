@@ -139,3 +139,4 @@ events可以是以下几个宏的集合：
 - [聊聊IO多路复用之select、poll、epoll详解](https://www.jianshu.com/p/dfd940e7fca2)
 - [IO多路复用与Go网络库的实现](https://ninokop.github.io/2018/02/18/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B8%8EGo%E7%BD%91%E7%BB%9C%E5%BA%93%E7%9A%84%E5%AE%9E%E7%8E%B0/)
 - [IO复用模式--select、poll、epoll详解](https://blog.csdn.net/u013679744/article/details/79188768)
+- [https://segmentfault.com/a/1190000003063859](https://segmentfault.com/a/1190000003063859}
