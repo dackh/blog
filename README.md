@@ -7,6 +7,7 @@
 
 ## 数据库
 - [mysql](https://github.com/dackh/blog/blob/master/mysql.md)
+- [mysql锁](https://github.com/dackh/blog/blob/master/mysql锁.md)
 - [redis](https://github.com/dackh/blog/blob/master/redis.md)
 
 ## 算法
